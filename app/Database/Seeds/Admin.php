@@ -26,7 +26,7 @@ class Admin extends Seeder
         ];
         $this->db->table('admin')->insertBatch($data);
         // dummy data
-        $faker = \Faker\Factory::create();
+        $faker = \Faker\Factory::create('id_ID');
         for ($i=0; $i < 98; $i++) { 
             $fakedata = [
                 'nama_admin' => $faker->name,

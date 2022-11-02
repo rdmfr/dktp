@@ -8,7 +8,7 @@ class Setting extends Seeder
 {
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $faker = \Faker\Factory::create('id_ID');
         $this->db->connect();
         $adminData = $this->db->query("SELECT id_admin FROM admin")->getResultArray();
         for ($i=0; $i < 98; $i++) { 
