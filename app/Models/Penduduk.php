@@ -9,7 +9,7 @@ class Penduduk extends Model
     protected $DBGroup          = 'default';
     protected $table            = 'penduduk';
     protected $primaryKey       = 'nik';
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
