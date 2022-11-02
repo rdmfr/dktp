@@ -7,14 +7,20 @@ use CodeIgniter\Model;
 class Admin extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'admins';
-    protected $primaryKey       = 'id';
+    protected $table            = 'admin';
+    protected $primaryKey       = 'id_admin';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'nama_admin',
+        'email',
+        'password',
+        'no_telp',
+        'level'
+    ];
 
     // Dates
     protected $useTimestamps = false;
