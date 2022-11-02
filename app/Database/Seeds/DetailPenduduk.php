@@ -8,7 +8,6 @@ class DetailPenduduk extends Seeder
 {
     public function run()
     {
-        $faker = \Faker\Factory::create('id_ID');
         $this->db->connect();
         $pendudukData = $this->db->query("SELECT nik,nama FROM penduduk")->getResultArray();
         for ($i=0; $i < 98; $i++) {
