@@ -45,4 +45,12 @@ class Admin extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getAdmin($admin = false)
+    {
+        if(!$admin){
+            return $this->findAll();
+        }
+        return $this->where([$this->primaryKey => $admin])->first();
+    }
 }
