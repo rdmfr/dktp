@@ -68,6 +68,11 @@ class Penduduk extends Migration
                 'type'          => 'DATE',
                 'null'          => true
             ],
+            'email' => [
+                'type'          => 'VARCHAR',
+                'constraint'    => 50,
+                'unique'        => true
+            ],
             'password' => [
                 'type'          => 'VARCHAR',
                 'constraint'    => '255'

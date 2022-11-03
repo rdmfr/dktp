@@ -30,6 +30,7 @@ class Penduduk extends Model
         'pendidikan',
         'kewarganegaraan',
         'tgl_pembuatan',
+        'email',
         'password',
         'status'
     ];
@@ -57,4 +58,18 @@ class Penduduk extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+    public function getPenduduk($penduduk = false)
+    {
+        if(!$penduduk){
+            return $this->findAll();
+        }
+        return $this->where([$this->primaryKey => $penduduk])->first();
+    }
+
+    public function getSpesifikPenduduk($param)
+    {
+        return $this->where($param)->first();
+    }
 }
