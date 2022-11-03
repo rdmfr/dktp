@@ -9,6 +9,27 @@ class Penduduk extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create('id_ID');
+        $data = [
+            'nik' => $faker->nik(),
+            'no_kk' => $faker->nik(),
+            'nama' => 'Si A',
+            'tempat_lahir' => $faker->state,
+            'tgl_lahir' => $faker->date,
+            'jenis_kelamin' => 'L',
+            'alamat' => $faker->streetAddress,
+            'rt_rw' => $faker->randomNumber(3).'/'.$faker->randomNumber(3),
+            'agama' => $faker->randomElement(['islam','kristen','hindu','buddha']),
+            'golongan_darah' => $faker->randomElement(['A','B','AB','O']),
+            'status_perkawinan' => $faker->randomElement(['belum menikah','menikah']),
+            'pekerjaan' => $faker->jobTitle,
+            'pendidikan' => $faker->randomElement(['sd sederajat','smp sederajat','sma sederajat','s1','s2','s3']),
+            'kewarganegaraan' => $faker->randomElement(['wni','wna']),
+            'tgl_pembuatan' => $faker->date(),
+            'email' => 'sia@ektp.com',
+            'password' => password_hash('Penduduk62',PASSWORD_DEFAULT),
+            'status' => $faker->randomElement(['aktif','mutasi'])
+        ];
+        $this->db->table('penduduk')->insert($data);
         for ($i=0; $i < 98; $i++) { 
             $jk = $faker->randomElement(['L','P']);
             if($jk == 'L'){
@@ -32,6 +53,7 @@ class Penduduk extends Seeder
                 'pendidikan' => $faker->randomElement(['sd sederajat','smp sederajat','sma sederajat','s1','s2','s3']),
                 'kewarganegaraan' => $faker->randomElement(['wni','wna']),
                 'tgl_pembuatan' => $faker->date(),
+                'email' => $faker->safeEmail,
                 'password' => password_hash($faker->password(6,16),PASSWORD_DEFAULT),
                 'status' => $faker->randomElement(['aktif','mutasi'])
             ];
