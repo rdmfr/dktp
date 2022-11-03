@@ -60,16 +60,21 @@ class Penduduk extends Model
     protected $afterDelete    = [];
 
 
-    public function getPenduduk($penduduk = false)
+    public function getPenduduk($data = false)
     {
-        if(!$penduduk){
+        if(!$data){
             return $this->findAll();
         }
-        return $this->where([$this->primaryKey => $penduduk])->first();
+        return $this->where([$this->primaryKey => $data])->first();
     }
 
     public function getSpesifikPenduduk($param)
     {
         return $this->where($param)->first();
+    }
+
+    public function createPenduduk($data)
+    {
+        return $this->insert($data);
     }
 }
