@@ -4,17 +4,17 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Admin extends Migration
+class User extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_admin' => [
+            'id_user' => [
                 'type'          => 'INT',
                 'constraint'    => 11,
                 'auto_increment'=> true
             ],
-            'nama_admin' => [
+            'nama_user' => [
                 'type'          => 'VARCHAR',
                 'constraint'    => 50,
             ],
@@ -33,14 +33,18 @@ class Admin extends Migration
             ],
             'level' => [
                 'type'          => 'ENUM',
-                'constraint'    => ['superadmin','admin'],
-                'default'       => 'admin'
+                'constraint'    => ['superadmin','admin','user'],
+                'default'       => 'user'
+            ],
+            'foto_profil' => [
+                'type'          => 'VARCHAR',
+                'constraint'    => 255,
             ]
-        ])->addKey('id_admin',true)->createTable('admin');
+        ])->addKey('id_user',true)->createTable('user');
     }
 
     public function down()
     {
-        $this->forge->dropTable('admin');
+        $this->forge->dropTable('user');
     }
 }

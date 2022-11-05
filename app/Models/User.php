@@ -4,18 +4,18 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Admin extends Model
+class User extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'admin';
-    protected $primaryKey       = 'id_admin';
+    protected $table            = 'user';
+    protected $primaryKey       = 'id_user';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nama_admin',
+        'nama_user',
         'email',
         'password',
         'no_telp',
@@ -46,11 +46,39 @@ class Admin extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getAdmin($admin = false)
+    public function getUser($user = false)
     {
-        if(!$admin){
+        if(!$user){
             return $this->findAll();
         }
-        return $this->where([$this->primaryKey => $admin])->first();
+        return $this->where([$this->primaryKey => $user])->first();
+    }
+
+    public function getSpesifikUser($param)
+    {
+        return $this->where($param)->first();
+    }
+
+    public function createUser($data)
+    {
+        return $this->insert($data);
+    }
+    
+    public function updateUser($key,$data)
+    {
+        return $this->update($key,$data);
+    }
+
+    public function deleteUser($key)
+    {
+        return $this->delete($key);
+    }
+
+    public function getNumbers($param = false)
+    {
+        if(!$param){
+            return $this->selectCount($param);
+        }
+        return $this->selectCount();
     }
 }
