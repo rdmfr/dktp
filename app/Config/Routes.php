@@ -35,9 +35,19 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->match(['get','post'],'/', 'Home::index',['as'=>'login']);
-$routes->match(['get','post'],'/register', 'Home::register');
-$routes->get('/test', 'Home::test');
+$routes->match(['get','post'],'/', 'Auth::index',['as'=>'login']);
+// $routes->match(['get','post'],'/', 'Auth::index',['as'=>'login_user']);
+$routes->match(['get','post'],'/register', 'Auth::register');
+$routes->group('dktp', ['filter' => 'auth'], static function ($routes) {
+    $routes->get('/', 'Penduduk::index');
+});
+$routes->group('main',['filter' => 'auth'], static function ($routes) {
+    $routes->get('/', 'Admin::index');
+    $routes->get('profile', 'Admin::profile');
+    $routes->get('dashboard', 'Admin::index');
+},);
+$routes->get('/test', 'Auth::test');
+$routes->get('/logout', 'Auth::logout');
 
 /*
  * --------------------------------------------------------------------
