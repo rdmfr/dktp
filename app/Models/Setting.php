@@ -53,4 +53,40 @@ class Setting extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getSetting($data = false)
+    {
+        if(!$data){
+            return $this->findAll();
+        }
+        return $this->where([$this->primaryKey => $data])->first();
+    }
+
+    public function getSpesifikSetting($param)
+    {
+        return $this->where($param)->first();
+    }
+
+    public function createSetting($data)
+    {
+        return $this->insert($data);
+    }
+
+    public function updateSetting($key,$data)
+    {
+        return $this->update($key,$data);
+    }
+
+    public function deletePenduduk($key)
+    {
+        return $this->delete($key);
+    }
+
+    public function getNumbers($param = false)
+    {
+        if(!$param){
+            return $this->selectCount($param);
+        }
+        return $this->selectCount();
+    }
 }

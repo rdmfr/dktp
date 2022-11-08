@@ -44,4 +44,40 @@ class Approval extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getApproval($approval = false)
+    {
+        if (!$approval) {
+            return $this->findAll();
+        }
+        return $this->where([$this->primaryKey => $approval])->first();
+    }
+
+    public function getSpesifikApproval($param)
+    {
+        return $this->where($param)->first();
+    }
+
+    public function createApproval($data)
+    {
+        return $this->insert($data);
+    }
+
+    public function updateApproval($key, $data)
+    {
+        return $this->update($key, $data);
+    }
+
+    public function deleteApproval($key)
+    {
+        return $this->delete($key);
+    }
+
+    public function getNumbers($param = false)
+    {
+        if(!$param){
+            return $this->selectCount($param);
+        }
+        return $this->selectCount();
+    }
 }

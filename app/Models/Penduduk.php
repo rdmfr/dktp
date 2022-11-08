@@ -59,7 +59,6 @@ class Penduduk extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-
     public function getPenduduk($data = false)
     {
         if(!$data){
@@ -76,5 +75,23 @@ class Penduduk extends Model
     public function createPenduduk($data)
     {
         return $this->insert($data);
+    }
+
+    public function updatePenduduk($key,$data)
+    {
+        return $this->update($key,$data);
+    }
+
+    public function deletePenduduk($key)
+    {
+        return $this->delete($key);
+    }
+
+    public function getNumbers($param = false)
+    {
+        if(!$param){
+            return $this->selectCount($param);
+        }
+        return $this->selectCount();
     }
 }
