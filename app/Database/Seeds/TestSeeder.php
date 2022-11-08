@@ -8,7 +8,7 @@ class TestSeeder extends Seeder
 {
     public function run()
     {
-        $this->call('Admin');
+        $this->call('User');
         $this->call('Setting');
         $this->call('Penduduk');
         $this->call('DetailPenduduk');
