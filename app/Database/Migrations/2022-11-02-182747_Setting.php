@@ -63,12 +63,12 @@ class Setting extends Migration
                 'type'          => 'VARCHAR',
                 'constraint'    => 255,
             ],
-            'id_admin' => [
+            'id_user' => [
                 'type'          => 'INT',
                 'constraint'    => 11,
             ]
         ])->addKey('id_setting',true)
-        ->addForeignKey('id_admin','admin','id_admin')
+        ->addForeignKey('id_user','user','id_user')
         ->createTable('setting');
     }
 

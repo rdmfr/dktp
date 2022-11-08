@@ -10,7 +10,7 @@ class Setting extends Seeder
     {
         $faker = \Faker\Factory::create('id_ID');
         $this->db->connect();
-        $adminData = $this->db->query("SELECT id_admin FROM admin")->getResultArray();
+        $userData = $this->db->query("SELECT id_user FROM user WHERE level='admin'")->getResultArray();
         for ($i=0; $i < 98; $i++) { 
             $fakedata = [
                 'kode_wilayah' => $faker->postcode,
@@ -25,7 +25,7 @@ class Setting extends Seeder
                 'nip_sekretaris'=> $faker->randomNumber(5,false),
                 'nama_sekretaris'=> $faker->name,
                 'ttd_sekretaris'=> urlencode($faker->name).'.jpg',
-                'id_admin' => $adminData[$i]
+                'id_user' => $faker->randomElement($userData)
             ];
             $this->db->table('setting')->insert($fakedata);
         }
