@@ -1,5 +1,5 @@
 <?php
-$this->extend('layouts/dashboard');
+$this->extend('layouts/app');
 $this->section('content');
 ?>
 <section class="section">
