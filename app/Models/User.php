@@ -59,6 +59,11 @@ class User extends Model
         return $this->where($param)->first();
     }
 
+    public function filterUser($param)
+    {
+        return $this->where($param)->findAll();
+    }
+
     public function createUser($data)
     {
         return $this->insert($data);
