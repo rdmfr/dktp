@@ -7,46 +7,48 @@
             </a>
         </li>
         <?php
-        if(session()->get('level') != 'user'): ?>
-        <li class="nav-heading">Admin</li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="users">
-                <span>
-                    <i class="bi bi-people"></i> Users
-                </span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="approval">
-                <span><i class="bi bi-card-list"></i> Approval</span>
-            </a>
-        </li>
-        <?php endif; ?>
-        <?php
-        if(session()->get('level') == 'admin'): ?>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="profile">
-                <span>
-                    <i class="bi bi-gear"></i> Instansi
-                </span>
-            </a>
-        </li>
-        <?php endif; ?>
-        <?php
-        if(session()->get('level') == 'user'): ?>
-        <li class="nav-heading">Pelayanan</li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#ktp-nav" data-bs-toggle="collapse" href="#">
-                <span><i class="bi bi-postcard"></i> Pembuatan KTP</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="ktp-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <a href="buatktp">
-                    <i class="bi bi-circle"></i><span>Pengajuan</span>
+        if (session()->get('level') != 'user') : ?>
+            <li class="nav-heading">Pengelolaan</li>
+            <?php
+            if (session()->get('level') == 'superadmin') : ?>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="<?= site_url('main/petugas') ?>">
+                        <span>
+                            <i class="bi bi-people"></i> Petugas
+                        </span>
+                    </a>
+                </li>
+            <?php
+            elseif (session()->get('level') == 'admin') : ?>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="<?= site_url('profile') ?>">
+                        <span>
+                            <i class="bi bi-gear"></i> Instansi
+                        </span>
+                    </a>
+                </li>
+            <?php endif;?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="<?= site_url('main/approval') ?>">
+                    <span><i class="bi bi-card-list"></i> Approval</span>
                 </a>
-                <a href="status">
-                    <i class="bi bi-circle"></i><span>Status Pengajuan</span>
+            </li>
+        <?php
+        endif;
+        if (session()->get('level') == 'user') : ?>
+            <li class="nav-heading">Pelayanan</li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#ktp-nav" data-bs-toggle="collapse" href="#">
+                    <span><i class="bi bi-postcard"></i> Pembuatan KTP</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-            </ul>
-        </li>
-    <?php endif; ?>
+                <ul id="ktp-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <a href="dktp/buatktp">
+                        <i class="bi bi-circle"></i><span>Pengajuan</span>
+                    </a>
+                    <a href="<?= site_url('dktp/status')?>">
+                        <i class="bi bi-circle"></i><span>Status Pengajuan</span>
+                    </a>
+                </ul>
+            </li>
+        <?php endif; ?>
 </aside>
