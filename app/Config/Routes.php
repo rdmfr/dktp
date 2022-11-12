@@ -45,6 +45,9 @@ $routes->group('main',['filter' => 'auth'], static function ($routes) {
     $routes->get('/', 'Admin::index');
     $routes->get('profile', 'Admin::profile');
     $routes->get('dashboard', 'Admin::index');
+    $routes->match(['get','post'],'petugas', 'Petugas::index');
+    $routes->match(['get','post'],'petugas/edit/(:num)', 'Petugas::edit/$1');
+    $routes->get('petugas/delete/(:num)', 'Petugas::delete/$1');
 },);
 $routes->get('/test', 'Auth::test');
 $routes->get('/logout', 'Auth::logout');
