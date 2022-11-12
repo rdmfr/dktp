@@ -58,6 +58,11 @@ class Approval extends Model
         return $this->where($param)->first();
     }
 
+    public function filterApproval($param)
+    {
+        return $this->where($param)->findAll();
+    }
+
     public function createApproval($data)
     {
         return $this->insert($data);
