@@ -85,4 +85,26 @@ class Approval extends Model
         }
         return $this->selectCount();
     }
+
+    public function getFullApproval($params = [],$cond = [])
+    {
+        if ($params) {
+            $this->select($params);
+        }else {
+            $this->select('*');
+        }
+        $this->join('penduduk',"penduduk.nik = approval.nik");
+        if($cond){
+            $this->where($cond);
+        }
+        return $this->findAll();
+    }
+
+    public function report()
+	{
+		$this->select('approval.*, penduduk.nama,penduduk.tgl_pembuatan');
+		$this->join('penduduk','penduduk.nik = approval.nik');
+		// $this->join('user','user.id_user = tanggapan.id_user','left');
+		return $this->findAll();	
+	}
 }
