@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\Approval;
 use App\Models\DetailPenduduk;
 use App\Models\Penduduk as ModelsPenduduk;
 
@@ -24,7 +25,6 @@ class Penduduk extends BaseController
 
     public function submitdata()
     {
-        
         if ($this->request->getMethod() == 'post' and $this->validate([
             'nik' => 'trim|required|is_natural|exact_length[15,16,17]|is_unique[penduduk.nik]',
             'no_kk' => 'trim|required|is_natural|exact_length[15,16,17]|is_unique[penduduk.no_kk]',
@@ -45,8 +45,10 @@ class Penduduk extends BaseController
         }
         $pendudukModel = model(ModelsPenduduk::class);
         $detailPendudukModel = model(DetailPenduduk::class);
+        $approvalModel = model(Approval::class);
+        $nik = $this->request->getPost('nik');
         $data = [
-            'nik' => $this->request->getPost('nik'),
+            'nik' => $nik,
             'no_kk' => $this->request->getPost('no_kk'),
             'nama' => $this->request->getPost('nama'),
             'tempat_lahir' => $this->request->getPost('tempat_lahir'),
@@ -64,7 +66,7 @@ class Penduduk extends BaseController
             'status' => 'aktif',
         ];
         $detail = [
-            'nik' => $this->request->getPost('nik'),
+            'nik' => $nik,
         ];
         $filefoto = $this->request->getFile('foto');
         if ($filefoto->isValid() &&!$filefoto->hasMoved()) {
@@ -74,7 +76,12 @@ class Penduduk extends BaseController
         }
         $penduduk = $pendudukModel->createPenduduk($data);
         $detpenduduk = $detailPendudukModel->createDetailPenduduk($detail);
-        if ($penduduk && $detpenduduk) {
+        $approval = $approvalModel->createApproval([
+            'status_approval' => 'verifikasi',
+            'tanggapan_approval' => '',
+            'nik' => $nik,
+        ]);
+        if ($penduduk && $detpenduduk && $approval) {
             return redirect('dktp/buatktp')->with('msg', '<div class="alert alert-primary" role="alert">
                     Data Berhasil Dikirim!
                     </div>');
