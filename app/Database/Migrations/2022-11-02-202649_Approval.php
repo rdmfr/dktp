@@ -29,7 +29,7 @@ class Approval extends Migration
                 'constraint'    => 16,
             ]
         ])->addKey('id_approval',true)
-        ->addForeignKey('nik','penduduk','nik')
+        ->addForeignKey('nik','penduduk','nik','CASCADE','CASCADE')
         ->createTable('approval');
     }
 

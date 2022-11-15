@@ -31,7 +31,7 @@ class DetailPenduduk extends Migration
                 'constraint'    => 255
             ]
         ])->addKey('id_detail',true)
-        ->addForeignKey('nik','penduduk','nik')
+        ->addForeignKey('nik','penduduk','nik','CASCADE','CASCADE')
         ->createTable('detail_penduduk');
     }
 
