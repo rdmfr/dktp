@@ -46,7 +46,7 @@ h6 {
   transition: all 0.3s;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
   #main {
     padding: 20px;
   }
@@ -415,7 +415,7 @@ h6 {
   padding: 0 20px;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
   .header .search-bar {
     position: fixed;
     top: 50px;
@@ -629,7 +629,7 @@ h6 {
   background-color: #fff;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
   .sidebar {
     left: -300px;
   }
@@ -645,7 +645,7 @@ h6 {
   background-color: #aab7cf;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1023px) {
 
   #main,
   #footer {
@@ -653,13 +653,13 @@ h6 {
   }
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
   .toggle-sidebar .sidebar {
     left: 0;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1023px) {
 
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
