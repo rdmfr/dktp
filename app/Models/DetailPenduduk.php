@@ -44,4 +44,9 @@ class DetailPenduduk extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function createDetailPenduduk($data)
+    {
+        return $this->insert($data);
+    }
 }

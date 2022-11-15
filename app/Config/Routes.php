@@ -40,6 +40,8 @@ $routes->match(['get','post'],'/', 'Auth::index',['as'=>'login']);
 $routes->match(['get','post'],'/register', 'Auth::register');
 $routes->group('dktp', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/', 'Penduduk::index');
+    $routes->get('buatktp', 'Penduduk::buatktp');
+    $routes->post('buatktp', 'Penduduk::submitdata');
 });
 $routes->group('main',['filter' => 'auth'], static function ($routes) {
     $routes->get('/', 'Admin::index');

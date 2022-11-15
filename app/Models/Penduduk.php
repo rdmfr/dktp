@@ -72,6 +72,20 @@ class Penduduk extends Model
         return $this->where($param)->first();
     }
 
+    public function getPendudukFull($params = [],$cond = [])
+    {
+        if ($params) {
+            $this->select($params);
+        }else {
+            $this->select('*');
+        }
+        $this->join('penduduk',"penduduk.nik = detail_penduduk.nik");
+        if($cond){
+            $this->where($cond);
+        }
+        return $this->findAll();
+    }
+
     public function createPenduduk($data)
     {
         return $this->insert($data);
