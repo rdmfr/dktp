@@ -36,11 +36,12 @@ class Penduduk extends BaseController
             // 'rt_rw' => 'trim|required|is_natural',
             'agama' => 'trim|required|in_list[islam,kristen,hindu,buddha,lainnya]',
             'golongan_darah' => 'trim|required|in_list[A,B,AB,O]',
-            'status_perkawinan' => 'trim|required|in_list[pelajar,belum_menikah,menikah]',
+            'status_perkawinan' => 'trim|required|in_list[belum_kawin,kawin]',
             'pekerjaan' => 'trim|required|alpha_numeric_space',
             'pendidikan' => 'trim|required|alpha_numeric_space',
             'kewarganegaraan' => 'trim|required|in_list[wni,wna]',
             'foto' => 'uploaded[foto]|max_size[foto,2048]|ext_in[foto,jpg,png,jpeg]|is_image[foto]',
+            'ttd' => 'required',
         ])) {
         }
         $pendudukModel = model(ModelsPenduduk::class);
@@ -55,7 +56,7 @@ class Penduduk extends BaseController
             'tgl_lahir' => $this->request->getPost('tgl_lahir'),
             'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
             'alamat' => $this->request->getPost('alamat'),
-            'rt_rw' => $this->request->getPost('rt') . '/' . $this->request->getPost('rw'),
+            'rt_rw' => sprintf("%'.03d/%'.03d",$this->request->getPost('rt'),$this->request->getPost('rw')),
             'agama' => $this->request->getPost('agama'),
             'golongan_darah' => $this->request->getPost('golongan_darah'),
             'status_perkawinan' => $this->request->getPost('status_perkawinan'),
@@ -67,6 +68,7 @@ class Penduduk extends BaseController
         ];
         $detail = [
             'nik' => $nik,
+            'ttd' => $this->request->getPost('ttd'),
         ];
         $filefoto = $this->request->getFile('foto');
         if ($filefoto->isValid() &&!$filefoto->hasMoved()) {
