@@ -8,13 +8,13 @@ $this->section('content');
         <form action="" method="post" enctype="multipart/form-data">
             <?= csrf_field() ?>
             <div class="card-body">
-                <h5 class="card-title">Formulir Membuat KTP <?= date('Y-m-d') ?> </h5>
-                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                <h5 class="card-title">Formulir Membuat KTP</h5>
+                <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="formTab" role="tablist">
                     <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100 active" id="biodata-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-biodata" type="button" role="tab" aria-controls="biodata" aria-selected="true">Biodata</button></li>
                     <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100" id="detail-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-detail" type="button" role="tab" aria-controls="detail" aria-selected="false" tabindex="-1">Detail</button></li>
                     <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100" id="konfirmasi-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-konfirmasi" type="button" role="tab" aria-controls="konfirmasi" aria-selected="false" tabindex="-1">Konfirmasi</button></li>
                 </ul>
-                <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                <div class="tab-content pt-2" id="formTabContent">
                     <div class="tab-pane fade active show row needs-validation" id="bordered-justified-biodata" role="tabpanel" aria-labelledby="biodata-tab">
                         <div class="form-group row mb-2">
                             <label for="nik" class="form-label col-md-4">NIK</label>
@@ -43,7 +43,7 @@ $this->section('content');
                         <div class="form-group row mb-2">
                             <label for="nama" class="form-label col-md-4">Nama Lengkap</label>
                             <div class="col-md">
-                                <input type="text" name="nama" class="form-control <?= (service('validation')->hasError('nama')) ? 'is-invalid' : ''; ?>" id="nama" <?= set_value('nama') ?>>
+                                <input type="text" name="nama" class="form-control <?= (service('validation')->hasError('nama')) ? 'is-invalid' : ''; ?>" id="nama" <?= set_value('nama') ?> value="<?= session()->get('nama') ?>">
                                 <?php
                                 if (service('validation')->hasError('nama')) : ?>
                                     <div class="invalid-feedback">
@@ -103,6 +103,12 @@ $this->section('content');
                             <label for="inputState" class="form-label col-md-4">Golongan Darah</label></br>
                             <div class="col-md mx-0 row row-cols-2">
                                 <div class="form-check col-md-6">
+                                    <input type="radio" class="form-check-input" name="golongan_darah" value="-" id="tidaktahu" <?= set_radio('golongan_darah', '-', true) ?>>
+                                    <label class="form-check-label" for="tidaktahu">
+                                        -
+                                    </label>
+                                </div>
+                                <div class="form-check col-md-6">
                                     <input type="radio" class="form-check-input" name="golongan_darah" value="A" id="A" <?= set_radio('golongan_darah', 'A') ?>>
                                     <label class="form-check-label" for="A">
                                         A
@@ -155,7 +161,19 @@ $this->section('content');
                         <div class="form-group row mb-2">
                             <label for="pendidikan" class="form-label col-md-4">Pendidikan</label>
                             <div class="col-md">
-                                <input type="text" name="pendidikan" class="form-control <?= (service('validation')->hasError('pendidikan')) ? 'is-invalid' : ''; ?>" id="pendidikan" <?= set_value('pendidikan') ?>>
+                                <select id="pendidikan" name="pendidikan" class="form-select <?= (service('validation')->hasError('pendidikan')) ? 'is-invalid' : ''; ?>">
+                                    <option <?= set_select('pendidikan', '', true) ?>>Pilih...</option>
+                                    <option <?= set_select('pendidikan', 'SD') ?> value="SD">SD/Sederajat</option>
+                                    <option <?= set_select('pendidikan', 'SMP') ?> value="SMP">SMP/Sederajat</option>
+                                    <option <?= set_select('pendidikan', 'SMA') ?> value="SMA">SMA/Sederajat</option>
+                                    <option <?= set_select('pendidikan', 'D4') ?> value="D4">D4/S1</option>
+                                    <option <?= set_select('pendidikan', 'S2') ?> value="S2">S2</option>
+                                    <option <?= set_select('pendidikan', 'S3') ?> value="S3">S3</option>
+                                    <option <?= set_select('pendidikan', 'D1') ?> value="D1">D1</option>
+                                    <option <?= set_select('pendidikan', 'D2') ?> value="D2">D2</option>
+                                    <option <?= set_select('pendidikan', 'D3') ?> value="D3">D3</option>
+                                    <option <?= set_select('pendidikan', 'Lainnya') ?> value="Lainnya">Lainnya</option>
+                                </select>
                                 <?php
                                 if (service('validation')->hasError('pendidikan')) : ?>
                                     <div class="invalid-feedback">
@@ -167,7 +185,13 @@ $this->section('content');
                         <div class="form-group row mb-2">
                             <label for="pekerjaan" class="form-label col-md-4">Pekerjaan</label>
                             <div class="col-md">
-                                <input type="text" name="pekerjaan" class="form-control <?= (service('validation')->hasError('pekerjaan')) ? 'is-invalid' : ''; ?>" id="pekerjaan">
+                                <input class="form-control <?= (service('validation')->hasError('pekerjaan')) ? 'is-invalid' : ''; ?>" name="pekerjaan" list="opsiPekerjaan" id="datalistPekerjaan" placeholder="Cari pekerjaan..">
+                                <datalist id="opsiPekerjaan">
+                                    <option value="Belum Memiliki Pekerjaan">
+                                    <option value="Pelajar/Mahasiswa">
+                                    <option value="Wirausaha">
+                                    <option value="Wiraswasta">
+                                </datalist>
                                 <?php
                                 if (service('validation')->hasError('pekerjaan')) : ?>
                                     <div class="invalid-feedback">
@@ -197,8 +221,8 @@ $this->section('content');
                             <div class="col-md">
                                 <select id="statusperkawinan" name="status_perkawinan" class="form-select <?= (service('validation')->hasError('status_perkawinan')) ? 'is-invalid' : ''; ?>">
                                     <option <?= set_select('status_perkawinan', '', true) ?>>Pilih...</option>
-                                    <option <?= set_select('status_perkawinan', 'menikah') ?> value="menikah">Menikah</option>
-                                    <option <?= set_select('status_perkawinan', 'belum menikah') ?> value="belum menikah">Belum Menikah</option>
+                                    <option <?= set_select('status_perkawinan', 'kawin') ?> value="kawin">Kawin</option>
+                                    <option <?= set_select('status_perkawinan', 'belum kawin') ?> value="belum kawin">Belum Kawin</option>
                                 </select>
                                 <?php
                                 if (service('validation')->hasError('status_perkawinan')) : ?>
@@ -253,6 +277,22 @@ $this->section('content');
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <div class="form-group row mb-2">
+                            <label for="ttd" class="form-label col-md-4">Tanda Tangan</label>
+                            <div class="col-md row mx-0">
+                                <img src="" class="img-thumbnail img-responsive w-100" id="sign-preview" alt="">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signatureModel">
+                                    <span class="bi bi-pencil"></span> Gambar Disini
+                                </button>
+                                <input type="hidden" class="form-control <?= (service('validation')->hasError('ttd')) ? 'is-invalid' : ''; ?>" id="signature" name="ttd">
+                                <?php
+                                if (service('validation')->hasError('ttd')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= service('validation')->getError('ttd') ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="bordered-justified-konfirmasi" role="tabpanel" aria-labelledby="konfirmasi-tab">
                         <div class="form-group mb-2">
@@ -280,7 +320,35 @@ $this->section('content');
         </form>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade hidden" id="signatureModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="signatureModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content w-100">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signatureModelLabel">Tanda Tangan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body flex justify-content-center">
+                <div id="signature-pad" class="w-100 d-md-flex justify-content-md-center">
+                    <canvas id="signature-canvas" width="250px" height="100px" style="border:1px solid black;"></canvas>
+                </div>
+                <div class="m-2">
+                </div>
+            </div>
+            <div class="modal-footer flex justify-content-center">
+                <button type="button" id="clear_btn" class="btn btn-danger" data-action="clear">
+                    <span class="bi bi-trash"></span> Hapus
+                </button>
+                <button type="submit" id="save_btn" class="btn btn-primary" data-action="save">
+                    <span class="bi bi-save"></span> Simpan
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+<script type="text/javascript" src="<?= site_url('assets/js/signature.js') ?>"></script>
+<script type="text/javascript" src="<?= site_url('assets/js/sign.js') ?>"></script>
 <?php
 $this->endSection();
 ?>
