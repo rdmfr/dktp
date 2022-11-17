@@ -42,7 +42,7 @@
                     <span><i class="bi bi-postcard"></i> Pembuatan KTP</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="ktp-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                    <a href="dktp/buatktp">
+                    <a href="<?= site_url('dktp/buatktp') ?>">
                         <i class="bi bi-circle"></i><span>Pengajuan</span>
                     </a>
                     <a href="<?= site_url('dktp/status')?>">
