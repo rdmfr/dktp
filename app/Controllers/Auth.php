@@ -32,7 +32,8 @@ class Auth extends BaseController
                 'level' => $data['level'],
                 'foto' => $data['foto_profil']
             ]);
-            return redirect('main/dashboard')->with('msg', '<div class="alert alert-primary" role="alert">
+            $redirect_to = ($data['level']=='user') ? 'dktp' : 'main/dashboard' ;
+            return redirect($redirect_to)->with('msg', '<div class="alert alert-primary" role="alert">
             Login berhasil!
             </div>');
         } else {
@@ -90,6 +91,7 @@ class Auth extends BaseController
             }
         }
         $data['validation'] = $this->validator;
+        $data['admin'] = [];
         return view('register', $data);
     }
 
