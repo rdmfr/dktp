@@ -3,9 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Email\Email;
 
 class Auth extends BaseController
 {
+    public function __construct()
+    {
+        $this->userModel = model(User::class);
+    }
+
     public function index()
     {
         $data['title'] = 'Login';
@@ -23,8 +29,7 @@ class Auth extends BaseController
 
     public function login(string $email, string $password)
     {
-        $userModel = model(User::class);
-        $data = $userModel->getSpesifikUser(['email' => $email]);
+        $data = $this->userModel->getSpesifikUser(['email' => $email]);
         if ($data && password_verify($password, $data['password'])) {
             $this->session->set([
                 'nama' => ($data['nama']) ?? $data['nama_user'],
@@ -32,7 +37,7 @@ class Auth extends BaseController
                 'level' => $data['level'],
                 'foto' => $data['foto_profil']
             ]);
-            $redirect_to = ($data['level']=='user') ? 'dktp' : 'main/dashboard' ;
+            $redirect_to = ($data['level'] == 'user') ? 'dktp' : 'main/dashboard';
             return redirect($redirect_to)->with('msg', '<div class="alert alert-primary" role="alert">
             Login berhasil!
             </div>');
@@ -45,8 +50,7 @@ class Auth extends BaseController
 
     public function test()
     {
-        $userModel = model(User::class);
-        $data['user'] = $userModel->getUser();
+        $data['user'] = $this->userModel->getUser();
         return view('test', $data);
     }
 
@@ -56,33 +60,32 @@ class Auth extends BaseController
         if ($this->request->getMethod() == 'post' and $this->validate([
             'nik' => 'trim|required|numeric|is_unique[penduduk.nik]',
             'nama' => 'trim|required|alpha_numeric_space',
-            'email' => 'trim|required|valid_email|is_unique[penduduk.email]',
+            'email' => 'trim|required|valid_email|is_unique[user.email]',
             'password' => 'trim|required|alpha_numeric_space|min_length[6]|max_length[15]',
         ])) {
+            $nik = $this->request->getPost('nik');
+            $nama = $this->request->getPost('nama');
+            $email = $this->request->getPost('email');
+            $password = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
+
             $pendudukModel = model(Penduduk::class);
-            $penduduk = [
-                'nik' => $this->request->getPost('nik'),
-                // 'no_kk' => null,
-                'nama' => $this->request->getPost('nama'),
-                // 'tempat_lahir' => $this->request->getPost('tempat_lahir'),
-                // 'tgl_lahir' => $this->request->getPost('tgl_lahir'),
-                // 'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
-                // 'alamat' => $this->request->getPost('alamat'),
-                // 'rt_rw' => $this->request->getPost('rt_rw'),
-                // 'agama' => $this->request->getPost('agama'),
-                // 'golongan_darah' => $this->request->getPost('golongan_darah'),
-                // 'status_perkawinan' => $this->request->getPost('status_perkawinan'),
-                // 'pekerjaan' => $this->request->getPost('pekerjaan'),
-                // 'pendidikan' => $this->request->getPost('pendidikan'),
-                // 'kewarganegaraan' => $this->request->getPost('kewarganegaraan'),
-                // 'tgl_pembuatan' => $this->request->getPost('tgl_pembuatan'),
-                'email' => $this->request->getPost('email'),
-                'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            $kodeotp = $this->generateOTP();
+            $is_email_sended = $this->sendOTPByEmail($this->request->getPost('email'), $kodeotp);
+            $user_created = $this->userModel->createUser([
+                'nama_user' => $nama,
+                'email' => $email,
+                'password' => $password,
+                'level' => 'user',
+                'verify_key' => $kodeotp
+            ]);
+            $penduduk_created = $pendudukModel->createPenduduk([
+                'nik' => $nik,
+                'nama' => $nama,
                 'status' => 'aktif'
-            ];
-            if ($pendudukModel->createPenduduk($penduduk)) {
+            ]);
+            if ($user_created && $penduduk_created && $is_email_sended) {
                 return redirect('login')->with('msg', '<div class="alert alert-primary" role="alert">
-                Register berhasil, Silahkan Login!
+                Kode OTP untuk verifikasi email berhasil dikirim
                 </div>');
             } else {
                 return redirect('register')->with('msg', '<div class="alert alert-danger" role="alert">
@@ -93,6 +96,71 @@ class Auth extends BaseController
         $data['validation'] = $this->validator;
         $data['admin'] = [];
         return view('register', $data);
+    }
+
+    public function verifikasi_akun()
+    {
+        $data['title'] = 'Verifikasi Akun';
+        if ($this->request->getMethod() == 'post' and $this->validate([
+            'verify' => 'trim|required|exact_length[6]',
+        ])) {
+            $otp = $this->request->getPost('verify');
+            $penduduk = $this->userModel->getSpesifikUser(['verify_key' => $otp]);
+            if ($penduduk) {
+                return redirect('login')->with('msg', '<div class="alert alert-primary" role="alert">
+                Kode OTP anda sudah terverifikasi, silahkan login
+                </div>');
+            } else {
+                return redirect('verifikasi')->with('msg', '<div class="alert alert-danger" role="alert">
+                Kode OTP tidak valid
+                </div>');
+            }
+        }
+        return view('verifikasi_akun', $data);
+    }
+
+    public function verify_otp($otp)
+    {
+        // $otp = $this->request->getPost('verify');
+        $penduduk = $this->userModel->getSpesifikUser(['verify_key' => $otp]);
+        if ($penduduk) {
+            return $this->response->setJSON([
+                'verified' => true,
+                'message' => 'You are verified',
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'verified' => false,
+                'message' => 'OTP Code is not valid',
+            ]);
+        }
+    }
+
+    private function sendOTPByEmail(string $receiverEmail, $otpCode)
+    {
+        $email = new Email();
+        $config['fromEmail'] = 'sidikjap@localhost.com';
+        $config['fromName'] = 'Admin DKTP';
+        $config['userAgent'] = 'DKTP';
+        $config['SMTPHost'] = '127.0.0.1';
+        $config['SMTPUser'] = 'sidikjap@localhost.com';
+        $config['SMTPPass'] = 'sidikjaparikm1';
+        $email->initialize($config);
+
+        $email->setTo($receiverEmail);
+        $email->setSubject('Kode OTP Verifikasi Akun');
+        $email->setMessage("Kode OTP verifikasi anda adalah $otpCode \r\n Silahkan Masukkan Kode OTP pada halaman verifikasi akun berikut : " . site_url('verifikasi'));
+        $email->setNewline("\r\n");
+        try {
+            return $email->send();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    private function generateOTP()
+    {
+        return bin2hex(random_bytes(3));
     }
 
     public function logout()

@@ -37,7 +37,9 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->match(['get','post'],'/', 'Auth::index',['as'=>'login']);
 // $routes->match(['get','post'],'/', 'Auth::index',['as'=>'login_user']);
-$routes->match(['get','post'],'/register', 'Auth::register');
+$routes->match(['get','post'],'register', 'Auth::register');
+$routes->match(['get','post'],'verifikasi','Auth::verifikasi_akun');
+$routes->get('verifikasi/(:any)','Auth::verify_otp/$1');
 $routes->group('dktp', ['filter' => 'auth'], static function ($routes) {
     $routes->get('/', 'Penduduk::index');
     $routes->get('buatktp', 'Penduduk::buatktp');

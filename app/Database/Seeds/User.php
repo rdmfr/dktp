@@ -44,7 +44,8 @@ class User extends Seeder
                 'password' => password_hash($faker->password(6,16),PASSWORD_DEFAULT),
                 'no_telp' => $faker->phoneNumber,
                 'level' => $faker->randomElement(['superadmin','admin','user']),
-                'foto_profil' => urlencode($faker->name).'.jpg'
+                'foto_profil' => urlencode($faker->name).'.jpg',
+                'verify_key' => bin2hex(random_bytes(3)),
             ];
             $this->db->table('user')->insert($fakedata);
         }

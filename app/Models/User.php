@@ -19,7 +19,8 @@ class User extends Model
         'email',
         'password',
         'no_telp',
-        'level'
+        'level',
+        'verify_key',
     ];
 
     // Dates

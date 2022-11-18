@@ -39,6 +39,12 @@ class User extends Migration
             'foto_profil' => [
                 'type'          => 'VARCHAR',
                 'constraint'    => 255,
+            ],
+            'verify_key' => [
+                'type'          => 'VARCHAR',
+                'constraint'    => 255,
+                'null'          => true,
+                'unique'        => true,
             ]
         ])->addKey('id_user',true)->createTable('user');
     }
