@@ -8,26 +8,18 @@ $this->section('content');
 	<h2 class="title"><?= $title ?></h2>
 	<?= session()->getFlashdata('msg') ?>
 	<?= service('validation')->listErrors() ?>
-	<div class="input-div one">
-		<div class="i">
-			<i class="fas fa-user"></i>
-		</div>
-		<div class="div">
-			<h5>Email</h5>
-			<input type="text" class="input" name="email" id="">
-		</div>
-	</div>
 	<div class="input-div pass">
 		<div class="i">
 			<i class="fas fa-lock"></i>
 		</div>
 		<div class="div">
-			<h5>Password</h5>
-			<input type="password" class="input" name="password" id="">
+			<h5>Kode OTP</h5>
+			<input type="text" maxlength="6" class="input"  name="verify" id="" required>
 		</div>
 	</div>
-	<a class="btn-block" href="<?= base_url('register') ?>">Register</a>
-	<a class="btn-block" href="#">Lupa Password?</a>
-	<input type="submit" class="btn" value="Login">
+	<!-- <p class="form-helper">Tidak Mendapatkan kode?
+		<a href="<?= base_url('/') ?>">Kirim ulang</a>
+	</p> -->
+	<button type="submit" class="btn">Submit</button>
 </form>
 <?= $this->endSection() ?>

@@ -11,7 +11,7 @@
             <h1><?= $title ?></h1>
             <?php
             $segments = current_url(true)->getSegments();
-            array_splice($segments,0,1);
+            // array_splice($segments,0,1);
             if(is_numeric($segments[count($segments)-1])){
                 array_splice($segments,count($segments)-1,1);
             }
@@ -19,7 +19,7 @@
 
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?= base_url(current_url(true)->getSegments()[0].'/dashboard') ?>">Home</a></li>
+                    <!-- <li class="breadcrumb-item"><a href="<?= base_url(current_url(true)->getSegments()[0].'/dashboard') ?>">Home</a></li> -->
                     <?php
                     $base = (session()->get('level') != 'user')? 'main' : 'dktp' ;
                     for ($i = 0; $i < count($segments); $i++) :

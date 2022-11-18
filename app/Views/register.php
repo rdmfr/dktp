@@ -44,7 +44,7 @@ $this->section('content');
 			<input type="password" class="input" name="password" id="">
 		</div>
 	</div>
-	<a href="<?= base_url('/') ?>">Login</a>
+	<a class="btn-block" href="<?= base_url('/') ?>">Login</a>
 	<button type="submit" class="btn">REGISTER</button>
 </form>
 <?= $this->endSection() ?>
