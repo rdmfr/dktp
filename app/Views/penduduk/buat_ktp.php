@@ -149,6 +149,7 @@ $this->section('content');
                                     <option <?= set_select('agama', 'kristen') ?> value="kristen">Kristen</option>
                                     <option <?= set_select('agama', 'hindu') ?> value="hindu">Hindu</option>
                                     <option <?= set_select('agama', 'buddha') ?> value="buddha">Buddha</option>
+                                    <option <?= set_select('agama', 'konghucu') ?> value="konghucu">Konghucu</option>
                                 </select>
                                 <?php
                                 if (service('validation')->hasError('agama')) : ?>
