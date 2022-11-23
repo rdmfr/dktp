@@ -40,12 +40,22 @@ class User extends Migration
                 'type'          => 'VARCHAR',
                 'constraint'    => 255,
             ],
+            'active' => [
+                'type'          => 'INT',
+                'constraint'    => 1,
+                'default'       => 0,
+            ],
             'verify_key' => [
                 'type'          => 'VARCHAR',
                 'constraint'    => 255,
                 'null'          => true,
                 'unique'        => true,
-            ]
+            ],
+            'time_verified' => [
+                'type'          => 'VARCHAR',
+                'constraint'    => 255,
+                'null'          => true,
+            ],
         ])->addKey('id_user',true)->createTable('user');
     }
 

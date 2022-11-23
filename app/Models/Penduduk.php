@@ -30,8 +30,6 @@ class Penduduk extends Model
         'pendidikan',
         'kewarganegaraan',
         'tgl_pembuatan',
-        'email',
-        'password',
         'status'
     ];
 

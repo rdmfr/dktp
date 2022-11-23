@@ -107,6 +107,7 @@ class Auth extends BaseController
             $otp = $this->request->getPost('verify');
             $penduduk = $this->userModel->getSpesifikUser(['verify_key' => $otp]);
             if ($penduduk) {
+                $this->userModel->updateUser($penduduk['nik'],['active',1]);
                 return redirect('login')->with('msg', '<div class="alert alert-primary" role="alert">
                 Kode OTP anda sudah terverifikasi, silahkan login
                 </div>');
