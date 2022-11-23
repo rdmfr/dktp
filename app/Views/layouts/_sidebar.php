@@ -2,7 +2,7 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link " href="">
+            <a class="nav-link " href="<?= site_url((session()->get('level') == 'user') ? 'dktp' : 'main') ?>">
                 <span><i class="bi bi-house"></i> Dashboard</span>
             </a>
         </li>

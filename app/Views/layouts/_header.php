@@ -2,7 +2,7 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="<?= base_url('ektp') ?>" class="logo d-flex align-items-center">
+        <a href="<?= base_url('dktp') ?>" class="logo d-flex align-items-center">
             <img src="<?= base_url('assets/img/avatar.svg') ?>" alt="">
             <span class="d-none d-lg-block">D-KTP</span>
         </a>

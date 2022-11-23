@@ -94,6 +94,7 @@ class Approval extends Model
             $this->select('*');
         }
         $this->join('penduduk',"penduduk.nik = approval.nik");
+        $this->join('detail_penduduk',"penduduk.nik = detail_penduduk.nik");
         if($cond){
             $this->where($cond);
         }

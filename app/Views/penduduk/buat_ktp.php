@@ -100,6 +100,37 @@ $this->section('content');
                             </div>
                         </div>
                         <div class="form-group row mb-2">
+                            <label for="alamat" class="form-label col-md-4">Alamat</label>
+                            <div class="col-md">
+                                <textarea name="alamat" class="form-control <?= (service('validation')->hasError('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" rows="2"></textarea>
+                                <?php
+                                if (service('validation')->hasError('alamat')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= service('validation')->getError('alamat') ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="alamat" class="form-label col-md-4">RT/RW</label>
+                            <div class="col-md">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="text" name="rt" class="form-control <?= (service('validation')->hasError('rt_rw')) ? 'is-invalid' : ''; ?>" placeholder="RT" aria-label="RT">
+                                    </div>
+                                    <div class="col">
+                                        <input type="text" name="rw" class="form-control <?= (service('validation')->hasError('rt_rw')) ? 'is-invalid' : ''; ?>" placeholder="RW" aria-label="RW">
+                                    </div>
+                                </div>
+                                <?php
+                                if (service('validation')->hasError('rt_rw')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= service('validation')->getError('rt_rw') ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
                             <label for="inputState" class="form-label col-md-4">Golongan Darah</label></br>
                             <div class="col-md mx-0 row row-cols-2">
                                 <div class="form-check col-md-6">
@@ -159,7 +190,7 @@ $this->section('content');
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="form-group row mb-2">
+                        <!-- <div class="form-group row mb-2">
                             <label for="pendidikan" class="form-label col-md-4">Pendidikan</label>
                             <div class="col-md">
                                 <select id="pendidikan" name="pendidikan" class="form-select <?= (service('validation')->hasError('pendidikan')) ? 'is-invalid' : ''; ?>">
@@ -182,7 +213,7 @@ $this->section('content');
                                     </div>
                                 <?php endif; ?>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row mb-2">
                             <label for="pekerjaan" class="form-label col-md-4">Pekerjaan</label>
                             <div class="col-md">
@@ -243,37 +274,6 @@ $this->section('content');
                                 if (service('validation')->hasError('foto')) : ?>
                                     <div class="invalid-feedback">
                                         <?= service('validation')->getError('foto') ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-2">
-                            <label for="alamat" class="form-label col-md-4">Alamat</label>
-                            <div class="col-md">
-                                <textarea name="alamat" class="form-control <?= (service('validation')->hasError('alamat')) ? 'is-invalid' : ''; ?>" id="alamat" rows="2"></textarea>
-                                <?php
-                                if (service('validation')->hasError('alamat')) : ?>
-                                    <div class="invalid-feedback">
-                                        <?= service('validation')->getError('alamat') ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-2">
-                            <label for="alamat" class="form-label col-md-4">RT/RW</label>
-                            <div class="col-md">
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="text" name="rt" class="form-control <?= (service('validation')->hasError('rt_rw')) ? 'is-invalid' : ''; ?>" placeholder="RT" aria-label="RT">
-                                    </div>
-                                    <div class="col">
-                                        <input type="text" name="rw" class="form-control <?= (service('validation')->hasError('rt_rw')) ? 'is-invalid' : ''; ?>" placeholder="RW" aria-label="RW">
-                                    </div>
-                                </div>
-                                <?php
-                                if (service('validation')->hasError('rt_rw')) : ?>
-                                    <div class="invalid-feedback">
-                                        <?= service('validation')->getError('rt_rw') ?>
                                     </div>
                                 <?php endif; ?>
                             </div>

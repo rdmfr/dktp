@@ -13,25 +13,34 @@ class Penduduk extends BaseController
     {
         $data['title'] = 'Dashboard';
         $approvalModel = model(Approval::class);
-        $approval = $approvalModel->getFullApproval([
+        $approvalModel = model(Approval::class);
+        
+        $approval = ($approvalModel->getFullApproval([
             'status_approval', 'tanggapan_approval', 'tgl_tanggapan'
-        ], ['nama' => session()->get('nama')])[0];
+        ],['nama' => session()->get('nama')])[0]) ?? ['status_approval'=>''];
+        $data['biodata'] = ($approval['nik']) ?? '';
+        $data['foto'] = ($approval['foto']) ?? '';
+        $data['sidikjari'] = ($approval['sidik_jari']) ?? '';
         switch ($approval['status_approval']) {
             case 'verifikasi':
-                $data['badge'] = '<span class="badge bg-primary">Proses</span>';
+                $data['badge'] = '<span class="badge bg-warning text-dark">Verifikasi</span>';
                 $data['pesan'] = 'Approval sedang diverifikasi oleh admin, silahkan tunggu selama kurang lebih 5x24 Jam Kerja';
                 break;
             case 'proses':
-                $data['badge'] = '<span class="badge bg-primary">Proses</span>';
+                $data['badge'] = '<span class="badge bg-info text-dark">Proses</span>';
                 $data['pesan'] = 'Approval sedang diproses oleh admin, jika selama 3 hari status, silahkan hubungi admin di no. berikut ini';
                 break;
             case 'selesai':
-                $data['badge'] = '<span class="badge bg-primary">Selesai</span>';
+                $data['badge'] = '<span class="badge bg-success text-dark">Selesai</span>';
                 $data['pesan'] = 'Approval telah selesai, Terimakasih Telah Menggunakan Layanan Kami';
                 break;
             case 'selesai':
-                $data['badge'] = '<span class="badge bg-danger">Ditolak</span>';
+                $data['badge'] = '<span class="badge bg-dark text-white">Ditolak</span>';
                 $data['pesan'] = 'Approval ditolak dikarenakan : $approval[tanggapan_app]';
+                break;
+            default:
+                $data['badge'] = '<span class="badge bg-danger text-dark">Data Belum Lengkap</span>';
+                $data['pesan'] = '<p>Silahkan isi data pada menu Pembuatan KTP, Pengajuan atau klik tombol <a class="btn btn-outline-info" href="'. site_url('dktp/buatktp').'">Ini</a></p>';
                 break;
         }
         $data['validation'] = $this->validator;
@@ -59,7 +68,7 @@ class Penduduk extends BaseController
             'golongan_darah' => 'trim|required|in_list[A,B,AB,O]',
             'status_perkawinan' => 'trim|required|in_list[belum_kawin,kawin]',
             'pekerjaan' => 'trim|required|alpha_numeric_space',
-            'pendidikan' => 'trim|required|alpha_numeric_space',
+            // 'pendidikan' => 'trim|required|alpha_numeric_space',
             'kewarganegaraan' => 'trim|required|in_list[wni,wna]',
             'foto' => 'uploaded[foto]|max_size[foto,2048]|ext_in[foto,jpg,png,jpeg]|is_image[foto]',
             'ttd' => 'required',
@@ -82,7 +91,7 @@ class Penduduk extends BaseController
             'golongan_darah' => $this->request->getPost('golongan_darah'),
             'status_perkawinan' => $this->request->getPost('status_perkawinan'),
             'pekerjaan' => $this->request->getPost('pekerjaan'),
-            'pendidikan' => $this->request->getPost('pendidikan'),
+            // 'pendidikan' => $this->request->getPost('pendidikan'),
             'kewarganegaraan' => $this->request->getPost('kewarganegaraan'),
             'tgl_pembuatan' => date('Y-m-d'),
             'status' => 'aktif',
