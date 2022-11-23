@@ -12,15 +12,36 @@ class Penduduk extends BaseController
     public function index()
     {
         $data['title'] = 'Dashboard';
+        $approvalModel = model(Approval::class);
+        $approval = $approvalModel->getFullApproval([
+            'status_approval', 'tanggapan_approval', 'tgl_tanggapan'
+        ], ['nama' => session()->get('nama')])[0];
+        switch ($approval['status_approval']) {
+            case 'verifikasi':
+                $data['badge'] = '<span class="badge bg-primary">Proses</span>';
+                $data['pesan'] = 'Approval sedang diverifikasi oleh admin, silahkan tunggu selama kurang lebih 5x24 Jam Kerja';
+                break;
+            case 'proses':
+                $data['badge'] = '<span class="badge bg-primary">Proses</span>';
+                $data['pesan'] = 'Approval sedang diproses oleh admin, jika selama 3 hari status, silahkan hubungi admin di no. berikut ini';
+                break;
+            case 'selesai':
+                $data['badge'] = '<span class="badge bg-primary">Selesai</span>';
+                $data['pesan'] = 'Approval telah selesai, Terimakasih Telah Menggunakan Layanan Kami';
+                break;
+            case 'selesai':
+                $data['badge'] = '<span class="badge bg-danger">Ditolak</span>';
+                $data['pesan'] = 'Approval ditolak dikarenakan : $approval[tanggapan_app]';
+                break;
+        }
+        $data['validation'] = $this->validator;
         return view('dashboard', $data);
     }
 
     public function buatktp()
     {
         $data['title'] = 'Buat KTP';
-        $data['validation'] = $this->validator;
         return view('penduduk/buat_ktp', $data);
-
     }
 
     public function submitdata()
@@ -56,7 +77,7 @@ class Penduduk extends BaseController
             'tgl_lahir' => $this->request->getPost('tgl_lahir'),
             'jenis_kelamin' => $this->request->getPost('jenis_kelamin'),
             'alamat' => $this->request->getPost('alamat'),
-            'rt_rw' => sprintf("%'.03d/%'.03d",$this->request->getPost('rt'),$this->request->getPost('rw')),
+            'rt_rw' => sprintf("%'.03d/%'.03d", $this->request->getPost('rt'), $this->request->getPost('rw')),
             'agama' => $this->request->getPost('agama'),
             'golongan_darah' => $this->request->getPost('golongan_darah'),
             'status_perkawinan' => $this->request->getPost('status_perkawinan'),
@@ -71,7 +92,7 @@ class Penduduk extends BaseController
             'ttd' => $this->request->getPost('ttd'),
         ];
         $filefoto = $this->request->getFile('foto');
-        if ($filefoto->isValid() &&!$filefoto->hasMoved()) {
+        if ($filefoto->isValid() && !$filefoto->hasMoved()) {
             $newName = $filefoto->getRandomName();
             $filefoto->move(FCPATH . 'uploads', $newName);
             $detail['foto'] = $newName;
