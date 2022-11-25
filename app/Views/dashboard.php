@@ -74,8 +74,7 @@ $this->section('content');
                         </div>
                     </div>
                 </div>
-            <?php elseif (session()->get('level') == 'user') :
-            ?>
+            <?php elseif (session()->get('level') == 'user') : ?>
                 <div class="mt-4 p-5 bg-primary text-white rounded">
                     <h2><b> Status Pembuatan KTP <?= $badge ?></b></h2>
                     <table class="table table-responsive table-borderless text-white">
@@ -114,28 +113,47 @@ $this->section('content');
                     <div class="border-bottom border-white">
                         <h4><b>Langkah Pembuatan KTP :</b></h4>
                     </div>
-                    <li>Sebelum melakukan proses pembuatan KTP, dimohon untuk menambahkan fingerprint terlebih dahulu di Perangkat anda.</li>
-                    <li>Data fingerprint yang dibutuhkan :</li>
-                    <ol>- Tangan Kanan & Tangan Kiri
-                        <ul>
-                            <li>Jempol</li>
-                            <li>Telunjuk</li>
-                            <li>Jari Tengah</li>
-                            <li>Jari Manis</li>
-                            <li>Kelingking</li>
-                        </ul>
+                    <ol>
+                        <li>Sebelum melakukan proses pembuatan KTP, dimohon untuk menambahkan fingerprint terlebih dahulu di Perangkat anda.</li>
+                        <li>Data fingerprint yang dibutuhkan :
+                            <ul>
+                                <li>
+                                    Jari Tangan Kanan & Kiri
+                                    <ul>
+                                        <li>Jempol</li>
+                                        <li>Telunjuk</li>
+                                        <li>Jari Tengah</li>
+                                        <li>Jari Manis</li>
+                                        <li>Kelingking</li>
+                                    </ul>
+                                </li>
+                                <li>Cara menambah fingerprint di handphone andorid :
+                                    <ol>
+                                        <li>Masuk ke Setting/setelan -> Sandi & keamanan -> Buka kunci dengan sidik jari -> Tambah sidik jari.</li>
+                                        <li><b>Catatan :</b> Diharap menamai scan fingerprint anda dengan format :</li>
+                                        <h6>Contoh :</h6>
+                                        <ul>
+                                            <li>Jempol_kanan</li>
+                                            <li>Telunjuk_kanan</li>
+                                            <li>Jaritengah_kanan</li>
+                                            <li>Jarimanis_kanan</li>
+                                            <li>Kelingking_kanan</li>
+                                            <li>Dan sebaliknya...</li>
+                                        </ul>
+                                    </ol>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Pengisian data diri dimohon untuk melakukannya pada jam kerja, pukul 08:00 s/d 16:00 WIB</li>
+                        <li>Isi data diri sesuai dengan yang tercantum dalam KK anda.</li>
+                        <li>Foto wajah sampai dada dengan latar biru.</li>
+                        <li>Jika semua sudah terisi dengan baik dan benar,mohon tunggu proses verifikasi yang dilakukan oleh
+                            admin.</li>
+                        <li>Jika selama waktu 7x24 Jam admin belum memverifikasi pembuatan KTP, bisa hubungi di
+                            <b><a class="text-white" href="https://wa.me/+628988285622">CS. Digital KTP.</a></b>
+                        </li>
+                        <li>Jika dalam waktu 2 minggu KTP belum diproses,hubungi admin DKTP atau datang ke kantor kecamatan daerah anda.</li>
                     </ol>
-                    <li>Cara menambah fingerprint di handphone andorid :</li>
-                    <ol>- Masuk ke setting/setelan -> Sandi & keamanan -> Buka kunci dengan sidik jari -> Tambah sidik jari.</ol>
-                    <li>Pengisian data diri dimohon untuk melakukannya pada jam kerja, pukul 08:00 s/d 16:00 WIB</li>
-                    <li>Isi data diri sesuai dengan yang tercantum dalam KK anda.</li>
-                    <li>Foto wajah sampai dada dengan latar biru.</li>
-                    <li>Jika semua sudah terisi dengan baik dan benar,mohon tunggu proses verifikasi yang dilakukan oleh
-                        admin.</li>
-                    <li>Jika selama waktu 7x24 Jam admin belum memverifikasi pembuatan KTP, bisa hubungi di
-                        <b><a class="text-white" href="https://wa.me/+628988285622">CS. Digital KTP.</a></b>
-                    </li>
-                    <li>Jika dalam waktu 2 minggu KTP belum diproses,hubungi admin DKTP atau datang ke kantor kecamatan daerah anda.</li>
                 </div>
             <?php endif; ?>
         </div>

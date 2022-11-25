@@ -31,7 +31,13 @@ class Auth extends BaseController
     {
         $data = $this->userModel->getSpesifikUser(['email' => $email]);
         if ($data && password_verify($password, $data['password'])) {
+            if ($data['active'] != 1) {
+                return redirect('login')->with('msg', '<div class="alert alert-primary" role="alert">
+                Akun Belum Aktif, Silahkan Verifikasi Email anda menggunakan kode OTP yang telah dikirimkan!
+                </div>');
+            }
             $this->session->set([
+                'id'    => $data['id_user'],
                 'nama' => ($data['nama']) ?? $data['nama_user'],
                 'email' => $data['email'],
                 'level' => $data['level'],
@@ -67,7 +73,6 @@ class Auth extends BaseController
             $nama = $this->request->getPost('nama');
             $email = $this->request->getPost('email');
             $password = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
-
             $pendudukModel = model(Penduduk::class);
             $kodeotp = $this->generateOTP();
             $is_email_sended = $this->sendOTPByEmail($this->request->getPost('email'), $kodeotp);
@@ -76,7 +81,10 @@ class Auth extends BaseController
                 'email' => $email,
                 'password' => $password,
                 'level' => 'user',
-                'verify_key' => $kodeotp
+                'foto_profil' => 'avatar.svg',
+                'verify_key' => $kodeotp,
+                'time_verified' => time(),
+                'created_by' => $email
             ]);
             $penduduk_created = $pendudukModel->createPenduduk([
                 'nik' => $nik,
@@ -105,9 +113,11 @@ class Auth extends BaseController
             'verify' => 'trim|required|exact_length[6]',
         ])) {
             $otp = $this->request->getPost('verify');
-            $penduduk = $this->userModel->getSpesifikUser(['verify_key' => $otp]);
-            if ($penduduk) {
-                $this->userModel->updateUser($penduduk['nik'],['active',1]);
+            $user = $this->userModel->getSpesifikUser(['verify_key' => $otp])['id_user'];
+            if ($user) {
+                $this->userModel->updateUser($user, [
+                    'active' => 1
+                ]);
                 return redirect('login')->with('msg', '<div class="alert alert-primary" role="alert">
                 Kode OTP anda sudah terverifikasi, silahkan login
                 </div>');
@@ -159,7 +169,7 @@ class Auth extends BaseController
         }
     }
 
-    private function generateOTP()
+    public function generateOTP()
     {
         return bin2hex(random_bytes(3));
     }

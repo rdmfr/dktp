@@ -11,8 +11,8 @@ $this->section('content');
                 <h5 class="card-title">Formulir Membuat KTP</h5>
                 <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="formTab" role="tablist">
                     <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100 active" id="biodata-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-biodata" type="button" role="tab" aria-controls="biodata" aria-selected="true">Biodata</button></li>
-                    <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100" id="detail-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-detail" type="button" role="tab" aria-controls="detail" aria-selected="false" tabindex="-1">Foto & Tanda Tangan</button></li>
-                    <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100" id="konfirmasi-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-konfirmasi" type="button" role="tab" aria-controls="konfirmasi" aria-selected="false" tabindex="-1">Sidik Jari</button></li>
+                    <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100" id="foto-ttd-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-foto-ttd" type="button" role="tab" aria-controls="foto-ttd" aria-selected="false" tabindex="-1">Foto & Tanda Tangan</button></li>
+                    <li class="nav-item flex-fill" role="presentation"> <button class="nav-link w-100" id="sidikjari-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-sidikjari" type="button" role="tab" aria-controls="sidikjari" aria-selected="false" tabindex="-1">Sidik Jari</button></li>
                 </ul>
                 <div class="tab-content pt-2" id="formTabContent">
                     <div class="tab-pane fade active show row needs-validation" id="bordered-justified-biodata" role="tabpanel" aria-labelledby="biodata-tab">
@@ -131,6 +131,26 @@ $this->section('content');
                             </div>
                         </div>
                         <div class="form-group row mb-2">
+                            <label for="wilayah" class="form-label col-md-4">Wilayah</label>
+                            <div class="col-md">
+                                <input class="form-control <?= (service('validation')->hasError('wilayah')) ? 'is-invalid' : ''; ?>" name="wilayah" list="listWilayah" id="datalistWilayah" placeholder="Cari wilayah...">
+                                <datalist id="listWilayah">
+                                    <?php
+                                    foreach ($wilayah as $w): ?>
+                                        <option value="<?= $w['kode_wilayah'] ?>"><?= "$w[jenis_wilayah] $w[nama_wilayah] - $w[kecamatan] - $w[kab_kota] - $w[provinsi]" ?></option>
+                                    <?php
+                                    endforeach;
+                                    ?>
+                                </datalist>
+                                <?php
+                                if (service('validation')->hasError('wilayah')) : ?>
+                                    <div class="invalid-feedback">
+                                        <?= service('validation')->getError('wilayah') ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
                             <label for="inputState" class="form-label col-md-4">Golongan Darah</label></br>
                             <div class="col-md mx-0 row row-cols-2">
                                 <div class="form-check col-md-6">
@@ -217,7 +237,7 @@ $this->section('content');
                         <div class="form-group row mb-2">
                             <label for="pekerjaan" class="form-label col-md-4">Pekerjaan</label>
                             <div class="col-md">
-                                <input class="form-control <?= (service('validation')->hasError('pekerjaan')) ? 'is-invalid' : ''; ?>" name="pekerjaan" list="opsiPekerjaan" id="datalistPekerjaan" placeholder="Cari pekerjaan..">
+                                <input class="form-control <?= (service('validation')->hasError('pekerjaan')) ? 'is-invalid' : ''; ?>" name="pekerjaan" list="opsiPekerjaan" id="datalistWilayah" placeholder="Cari pekerjaan..">
                                 <datalist id="opsiPekerjaan">
                                     <option value="Belum Memiliki Pekerjaan">
                                     <option value="Pelajar/Mahasiswa">
@@ -265,12 +285,11 @@ $this->section('content');
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="bordered-justified-detail" role="tabpanel" aria-labelledby="detail-tab">
+                    <div class="tab-pane fade" id="bordered-justified-foto-ttd" role="tabpanel" aria-labelledby="foto-ttd-tab">
                         <div class="form-group row mb-2">
                             <label for="foto" class="form-label col-md-4">Foto Pribadi</label>
                             <div class="col-md">
                                 <input type="file" name="foto" class="form-control <?= (service('validation')->hasError('foto')) ? 'is-invalid' : ''; ?>" id="foto">
-                                <small id="text-Help" class="form-text text-muted">Dengan Latar Biru</small>
                                 <?php
                                 if (service('validation')->hasError('foto')) : ?>
                                     <div class="invalid-feedback">
@@ -282,11 +301,14 @@ $this->section('content');
                         <div class="form-group row mb-2">
                             <label for="ttd" class="form-label col-md-4">Tanda Tangan</label>
                             <div class="col-md row mx-0">
-                                <img src="" class="img-thumbnail img-responsive w-100" id="sign-preview" alt="">
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#signatureModel">
-                                    <span class="bi bi-pencil"></span> Gambar Disini
-                                </button>
-                                <input type="hidden" class="form-control <?= (service('validation')->hasError('ttd')) ? 'is-invalid' : ''; ?>" id="signature" name="ttd">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signatureModel">
+                                            <span class="bi bi-pencil"></span> Gambar Disini
+                                        </button>
+                                    </div>
+                                    <input type="file" class="form-control mb-1 <?= (service('validation')->hasError('ttd')) ? 'is-invalid' : ''; ?>" id="signature-image" name="ttd">
+                                </div>
                                 <?php
                                 if (service('validation')->hasError('ttd')) : ?>
                                     <div class="invalid-feedback">
@@ -296,28 +318,28 @@ $this->section('content');
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="bordered-justified-konfirmasi" role="tabpanel" aria-labelledby="konfirmasi-tab">
+                    <div class="tab-pane fade" id="bordered-justified-sidikjari" role="tabpanel" aria-labelledby="sidikjari-tab">
                         <div class="form-group row mb-2">
                             <label for="sidikjari" class="form-label col md-4">Sidik Jari Tangan Kanan</label>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_jempol" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Jempol Kanan</span>
+                                    <span class="">Scan Jempol</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_telunjuk" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Telunjuk Kanan</span>
+                                    <span class="">Scan Telunjuk</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_jaritengah" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Jari Tengah Kanan</span>
+                                    <span class="">Scan Jari Tengah</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_jarimanis" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Jari Manis Kanan</span>
+                                    <span class="">Scan Jari Manis</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_kelingking" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Kelingking Kanan</span>
+                                    <span class="">Scan Kelingking</span>
                             </div>
                         </div>
                         </br>
@@ -325,30 +347,30 @@ $this->section('content');
                             <label for="sidikjari" class="form-label col md-4">Sidik Jari Tangan Kiri</label>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_jempol" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Jempol Kiri</span>
+                                    <span class="">Scan Jempol</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_telunjuk" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Telunjuk Kiri</span>
+                                    <span class="">Scan Telunjuk</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_jaritengah" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Jari Tengah Kiri</span>
+                                    <span class="">Scan Jari Tengah</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_jarimanis" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Jari Manis Kiri</span>
+                                    <span class="">Scan Jari Manis</span>
                             </div>
                             <div class="col-md row mx-0">
                                 <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="kanan_kelingking" data-bs-target="#sidik_jari">
-                                    <span class="">Scan Kelingking Kiri</span>
+                                    <span class="">Scan Kelingking</span>
                             </div>
                         </div>
                         </br>
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="" id="" value="checkedValue" checked>
+                                    <input type="checkbox" class="form-check-input" name="" id="" value="checkedValue">
                                     Saya Telah Menyetujui dan Memahami Prosedur Pembuatan KTP disini
                                 </label>
                             </div>
@@ -356,16 +378,15 @@ $this->section('content');
                         <div class="form-group mb-2">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="" id="" value="checkedValue" checked>
+                                    <input type="checkbox" class="form-check-input" name="" id="" value="checkedValue">
                                     Informasi Yang Saya Berikan Sudah Benar
                                 </label>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
             <div class="card-footer">
-                <button class="btn btn-primary" type="submit">Konfirmasi</button>
+                <button class="btn btn-primary" type="submit">Tambah</button>
             </div>
         </form>
     </div>
@@ -382,8 +403,6 @@ $this->section('content');
             <div class="modal-body flex justify-content-center">
                 <div id="signature-pad" class="w-100 d-md-flex justify-content-md-center">
                     <canvas id="signature-canvas" width="250px" height="100px" style="border:1px solid black;"></canvas>
-                </div>
-                <div class="m-2">
                 </div>
             </div>
             <div class="modal-footer flex justify-content-center">

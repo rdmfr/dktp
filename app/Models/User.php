@@ -20,7 +20,10 @@ class User extends Model
         'password',
         'no_telp',
         'level',
+        'foto_profil',
+        'active',
         'verify_key',
+        'time_verified'
     ];
 
     // Dates
