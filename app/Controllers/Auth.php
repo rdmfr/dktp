@@ -64,7 +64,7 @@ class Auth extends BaseController
     {
         $data['title'] = 'Register';
         if ($this->request->getMethod() == 'post' and $this->validate([
-            'nik' => 'trim|required|numeric|is_unique[penduduk.nik]',
+            'nik' => 'trim|required|is_natural|exact_length[15,16,17]|is_unique[penduduk.nik]',
             'nama' => 'trim|required|alpha_numeric_space',
             'email' => 'trim|required|valid_email|is_unique[user.email]',
             'password' => 'trim|required|alpha_numeric_space|min_length[6]|max_length[15]',
@@ -84,12 +84,12 @@ class Auth extends BaseController
                 'foto_profil' => 'avatar.svg',
                 'verify_key' => $kodeotp,
                 'time_verified' => time(),
-                'created_by' => $email
             ]);
             $penduduk_created = $pendudukModel->createPenduduk([
                 'nik' => $nik,
                 'nama' => $nama,
-                'status' => 'aktif'
+                'status' => 'aktif',
+                'created_by' => $email
             ]);
             if ($user_created && $penduduk_created && $is_email_sended) {
                 return redirect('login')->with('msg', '<div class="alert alert-primary" role="alert">

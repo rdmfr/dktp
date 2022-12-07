@@ -8,13 +8,13 @@ $this->section('content');
         <div class="col-12 card">
             <div class="card-body p-1">
                 <h5 class="card-title">Data Admin:
-                    <a href="<?= site_url("main/setting/edit/$setting[nip_pimpinan]") ?>" class="btn btn-sm btn-primary">
+                    <a href="<?= site_url("main/setting/edit/". ($setting['nip_pimpinan']) ?? '') ?>" class="btn btn-sm btn-primary">
                         <span class="bi bi-pencil-square text-white"></span>
                     </a>
                 </h5>
                 <div class="row">
                     <div class="col-lg d-flex align-center align-self-center justify-content-center">
-                        <img src="https://source.unsplash.com/random/240x240" class="img-thumbnail" alt="">
+                        <img src="<?= ($user['foto_profil']) ? site_url().'assets/img/avatar.svg' : 'uploads/'.$user['foto_profil'] ?>" class="img-thumbnail" alt="user-profile">
                     </div>
                     <div class="col-lg d-flex align-center align-self-center justify-content-center">
                         <div class="table-responsive">

@@ -56,7 +56,7 @@ class Setting extends Model
 
     public function getSetting($data = false)
     {
-        if(!$data){
+        if (!$data) {
             return $this->findAll();
         }
         return $this->where([$this->primaryKey => $data])->first();
@@ -72,9 +72,9 @@ class Setting extends Model
         return $this->insert($data);
     }
 
-    public function updateSetting($key,$data)
+    public function updateSetting($key, $data)
     {
-        return $this->update($key,$data);
+        return $this->update($key, $data);
     }
 
     public function deletePenduduk($key)
@@ -84,7 +84,7 @@ class Setting extends Model
 
     public function getNumbers($param = false)
     {
-        if(!$param){
+        if (!$param) {
             return $this->selectCount($param);
         }
         return $this->selectCount();

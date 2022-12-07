@@ -25,26 +25,22 @@ class Penduduk extends BaseController
         $data['biodata'] = ($approval['nik']) ?? '';
         $data['foto'] = ($approval['foto']) ?? '';
         $data['sidikjari'] = ($approval['sidik_jari']) ?? '';
+        $data['pesan'] = ($approval['tanggapan_approval']) ?? '';
         switch ($approval['status_approval']) {
             case 'verifikasi':
                 $data['badge'] = '<span class="badge bg-warning text-dark">Verifikasi</span>';
-                $data['pesan'] = 'Approval sedang diverifikasi oleh admin, silahkan tunggu selama kurang lebih 5x24 Jam Kerja';
                 break;
             case 'proses':
                 $data['badge'] = '<span class="badge bg-info text-dark">Proses</span>';
-                $data['pesan'] = 'Approval sedang diproses oleh admin, jika selama 3 hari status, silahkan hubungi admin di no. berikut ini';
                 break;
             case 'selesai':
                 $data['badge'] = '<span class="badge bg-success text-dark">Selesai</span>';
-                $data['pesan'] = 'Approval telah selesai, Terimakasih Telah Menggunakan Layanan Kami';
                 break;
             case 'ditolak':
                 $data['badge'] = '<span class="badge bg-dark text-white">Ditolak</span>';
-                $data['pesan'] = "Approval ditolak dikarenakan : $approval[tanggapan_approval]";
                 break;
             default:
                 $data['badge'] = '<span class="badge bg-danger text-dark">Data Belum Lengkap</span>';
-                $data['pesan'] = '<p>Silahkan isi data pada menu Pembuatan KTP, Pengajuan atau klik tombol <a class="btn btn-outline-info" href="' . site_url('dktp/buatktp') . '">Ini</a></p>';
                 break;
         }
         $data['validation'] = $this->validator;
@@ -57,13 +53,14 @@ class Penduduk extends BaseController
         $data['wilayah'] = $this->settingModel->query(
             'SELECT id_setting,kode_wilayah,nama_wilayah,jenis_wilayah,kecamatan,kab_kota,provinsi FROM setting'
         )->getResultArray();
+        $data['penduduk'] = $this->pendudukModel->getSpesifikPenduduk(['created_by'=>session()->get('email')]);
         return view('penduduk/buat_ktp', $data);
     }
 
     public function submitdata()
     {
         if ($this->request->getMethod() == 'post' and $this->validate([
-            'nik' => 'trim|required|is_natural|exact_length[15,16,17]|is_unique[penduduk.nik]',
+            // 'nik' => 'trim|required|is_natural|exact_length[15,16,17]|is_unique[penduduk.nik]',
             'no_kk' => 'trim|required|is_natural|exact_length[15,16,17]|is_unique[penduduk.no_kk]',
             'nama' => 'trim|required|alpha_space',
             'tempat_lahir' => 'trim|required|alpha_space',
@@ -81,8 +78,9 @@ class Penduduk extends BaseController
         ])) {
             $detailPendudukModel = model(DetailPenduduk::class);
             $nik = $this->request->getPost('nik');
+            
             $data = [
-                'nik' => $nik,
+                // 'nik' => $nik,
                 'no_kk' => $this->request->getPost('no_kk'),
                 'nama' => $this->request->getPost('nama'),
                 'tempat_lahir' => $this->request->getPost('tempat_lahir'),
@@ -116,7 +114,7 @@ class Penduduk extends BaseController
                 $filettd->move(FCPATH . 'uploads', $newName);
                 $detail['ttd'] = $newName;
             }
-            $penduduk = $this->pendudukModel->createPenduduk($data);
+            $penduduk = $this->pendudukModel->updatePenduduk($nik,$data);
             $detpenduduk = $detailPendudukModel->createDetailPenduduk($detail);
             $approval = $this->approvalModel->createApproval([
                 'status_approval' => 'verifikasi',
@@ -144,26 +142,22 @@ class Penduduk extends BaseController
         $data['title'] = 'Detail Pembuatan KTP';
         $approval = $this->approvalModel->getFullApproval([], ['created_by' => session()->get('email')])[0];
         $data['approval'] = $approval;
+        $data['pesan'] = ($approval['tanggapan_approval']) ?? '';
         switch ($approval['status_approval']) {
             case 'verifikasi':
                 $data['badge'] = '<span class="badge bg-warning text-dark">Verifikasi</span>';
-                $data['pesan'] = 'Approval sedang diverifikasi oleh admin, silahkan tunggu selama kurang lebih 5x24 Jam Kerja';
                 break;
             case 'proses':
                 $data['badge'] = '<span class="badge bg-info text-dark">Proses</span>';
-                $data['pesan'] = 'Approval sedang diproses oleh admin, jika selama 3 hari status, silahkan hubungi admin di no. berikut ini';
                 break;
             case 'selesai':
                 $data['badge'] = '<span class="badge bg-success text-dark">Selesai</span>';
-                $data['pesan'] = 'Approval telah selesai, Terimakasih Telah Menggunakan Layanan Kami';
                 break;
             case 'ditolak':
                 $data['badge'] = '<span class="badge bg-dark text-white">Ditolak</span>';
-                $data['pesan'] = "Approval ditolak dikarenakan : $approval[tanggapan_approval]";
                 break;
             default:
                 $data['badge'] = '<span class="badge bg-danger text-dark">Data Belum Lengkap</span>';
-                $data['pesan'] = '<p>Silahkan isi data pada menu Pembuatan KTP, Pengajuan atau klik tombol <a class="btn btn-outline-info" href="' . site_url('dktp/buatktp') . '">Ini</a></p>';
                 break;
         }
         return view('penduduk/detail',$data);
